@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Foundations — 52-Week Curriculum</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
+<div class="max-w-4xl mx-auto px-4 py-8">
+
+  <header class="mb-8">
+    <h1 class="text-2xl sm:text-3xl font-bold text-white">Foundations of AI and Mathematical Thinking</h1>
+    <p class="text-gray-400 mt-1">A 52-Week Self-Directed Curriculum — Shola Fatimoju</p>
+
+    <div class="mt-6 bg-gray-900 rounded-xl p-4 border border-gray-800">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm font-medium text-gray-300">Overall Progress</span>
+        <span id="overall-pct" class="text-sm font-bold text-emerald-400">0%</span>
+      </div>
+      <div class="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
+        <div id="overall-bar" class="h-3 bg-emerald-500 rounded-full transition-all duration-300" style="width:0%"></div>
+      </div>
+      <p id="overall-count" class="text-xs text-gray-500 mt-2">0 / 52 weeks completed</p>
+    </div>
+  </header>
+
+  <main id="phases" class="space-y-4"></main>
+
+  <footer class="mt-10 text-center">
+    <button id="reset-btn" class="text-sm text-red-400 hover:text-red-300 border border-red-900/50 hover:border-red-700 rounded-lg px-4 py-2 transition-colors">
+      Reset Progress
+    </button>
+  </footer>
+</div>
+
+<script>
+const LINKS = {
+  threeBlueOneBrown: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+  strangLectures: "https://www.youtube.com/playlist?list=PL49CF3715CB9EF31D",
+  strangCourse: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
+  stat110Lectures: "https://www.youtube.com/playlist?list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo",
+  stat110Book: "https://projects.iq.harvard.edu/stat110/home",
+  cs229: "https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU",
+  boydLectures: "https://www.youtube.com/playlist?list=PL3940DD956CDF0622",
+  boydBook: "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf",
+  mackay: "https://www.inference.org.uk/mackay/itila/book.html",
+  esl: "https://hastie.su.domains/ElemStatLearn/",
+  karpathy: "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ"
+};
+
+function link(text, url) {
+  return `<a href="${url}" target="_blank" rel="noopener" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">${text}</a>`;
+}
+
+const PHASES = [
+  {
+    name: "Phase 1 | Linear Algebra and AI from Scratch",
+    range: "Weeks 1 to 13",
+    weeks: [
+      { n: 1, topic: "Setup and intuition", material: `${link("3B1B videos 1 to 8", LINKS.threeBlueOneBrown)}`, build: "Python, Jupyter, GitHub repo live" },
+      { n: 2, topic: "Geometric intuition", material: `${link("3B1B videos 9 to 15", LINKS.threeBlueOneBrown)}`, build: "Notebook: deform a cat photo with 2x2 matrices" },
+      { n: 3, topic: "Vectors and Ax=b", material: `${link("Strang L1 to L4", LINKS.strangLectures)}`, build: "Problem set" },
+      { n: 4, topic: "Vector spaces", material: `${link("Strang L5 to L8", LINKS.strangLectures)}`, build: "Problem set" },
+      { n: 5, topic: "Four subspaces", material: `${link("Strang L9 to L11", LINKS.strangLectures)}`, build: "Problem set" },
+      { n: 6, topic: "Orthogonality", material: `${link("Strang L12 to L14", LINKS.strangLectures)}`, build: "Checkpoint 1: PageRank from scratch" },
+      { n: 7, topic: "Skip week", material: "Catch up or rest", build: "Optional: write up Checkpoint 1" },
+      { n: 8, topic: "Determinants", material: `${link("Strang L18 to L20", LINKS.strangLectures)}`, build: "Problem set" },
+      { n: 9, topic: "Eigenvalues", material: `${link("Strang L21 to L23", LINKS.strangLectures)}`, build: "Problem set" },
+      { n: 10, topic: "SVD and change of basis", material: `${link("Strang L24 to L26", LINKS.strangLectures)}`, build: "Checkpoint 2: image compression and eigenfaces" },
+      { n: 11, topic: "Backprop, autograd", material: `${link("Karpathy video 1 (micrograd)", LINKS.karpathy)}`, build: "Code along" },
+      { n: 12, topic: "Character-level LM", material: `${link("Karpathy video 2 (makemore)", LINKS.karpathy)}`, build: "Code along; swap in your own dataset" },
+      { n: 13, topic: "MLPs and embeddings", material: `${link("Karpathy video 3", LINKS.karpathy)}`, build: "Checkpoint 3: makemore on a corpus you choose" }
+    ]
+  },
+  {
+    name: "Phase 2 | Probability and Classical Machine Learning",
+    range: "Weeks 14 to 26",
+    weeks: [
+      { n: 14, topic: "Probability basics", material: `${link("Stat 110 L1 to L3", LINKS.stat110Lectures)}`, build: "Simulate Monty Hall and Birthday problem" },
+      { n: 15, topic: "Conditional probability", material: `${link("Stat 110 L4 to L6", LINKS.stat110Lectures)}`, build: "Bayes calculator notebook" },
+      { n: 16, topic: "Discrete distributions", material: `${link("Stat 110 L7 to L10", LINKS.stat110Lectures)}`, build: "Problem set" },
+      { n: 17, topic: "Continuous distributions", material: `${link("Stat 110 L11 to L14", LINKS.stat110Lectures)}`, build: "Checkpoint 4: Bayesian A/B test dashboard" },
+      { n: 18, topic: "Skip week", material: "Catch up", build: "" },
+      { n: 19, topic: "Joint distributions", material: `${link("Stat 110 L15 to L18", LINKS.stat110Lectures)}`, build: "Problem set" },
+      { n: 20, topic: "Markov chains", material: `${link("Stat 110 L19 to L22", LINKS.stat110Lectures)}`, build: "Checkpoint 5: Markov text generator on a corpus you love" },
+      { n: 21, topic: "MLE and regression", material: `${link("CS229 L1 to L3", LINKS.cs229)}`, build: "Implement linear regression three ways (closed form, GD, SGD)" },
+      { n: 22, topic: "Logistic regression", material: `${link("CS229 L4 to L5", LINKS.cs229)}`, build: "Implement from scratch" },
+      { n: 23, topic: "Generative models", material: `${link("CS229 L6 to L7", LINKS.cs229)}`, build: "Naive Bayes classifier" },
+      { n: 24, topic: "Kernels and SVMs", material: `${link("CS229 L8", LINKS.cs229)}`, build: "Notebook" },
+      { n: 25, topic: "Inference puzzles", material: `${link("Stat 110 L23 to L26", LINKS.stat110Lectures)}`, build: "Checkpoint 6: pick from build menu (Appendix B)" },
+      { n: 26, topic: "Synthesis", material: `${link("Stat 110 L27 to L30", LINKS.stat110Lectures)}`, build: "Substack post drafted" }
+    ]
+  },
+  {
+    name: "Phase 3 | Optimization",
+    range: "Weeks 27 to 39",
+    weeks: [
+      { n: 27, topic: "Convex sets", material: `${link("Boyd L1 to L2", LINKS.boydLectures)}`, build: "Visualize convex sets in 2D" },
+      { n: 28, topic: "Convex functions", material: `${link("Boyd L3 to L4", LINKS.boydLectures)}`, build: "Problem set" },
+      { n: 29, topic: "Convex problems", material: `${link("Boyd L5 to L6", LINKS.boydLectures)}`, build: "Problem set" },
+      { n: 30, topic: "Duality", material: `${link("Boyd L7 to L8", LINKS.boydLectures)}`, build: "Checkpoint 7: GD, Newton, IPM on toy problems" },
+      { n: 31, topic: "Skip week", material: "Catch up", build: "" },
+      { n: 32, topic: "LP and QP", material: `${link("Boyd L9 to L10", LINKS.boydLectures)}`, build: "CVXPY tutorial notebook" },
+      { n: 33, topic: "Applications", material: `${link("Boyd L11 to L12", LINKS.boydLectures)}`, build: "Checkpoint 8: pick from build menu" },
+      { n: 34, topic: "Algorithms", material: `${link("Boyd L13 to L14", LINKS.boydLectures)}`, build: "Problem set" },
+      { n: 35, topic: "SDP and conic", material: `${link("Boyd L15", LINKS.boydLectures)}`, build: "Problem set" },
+      { n: 36, topic: "Stochastic optimization", material: `${link("Boyd L16", LINKS.boydLectures)}`, build: "Notebook" },
+      { n: 37, topic: "Distributed and ADMM", material: `${link("Boyd L17 to L18", LINKS.boydLectures)}`, build: "Notebook" },
+      { n: 38, topic: "Build week", material: "None", build: "Checkpoint 9: capstone-quality optimization artifact" },
+      { n: 39, topic: "Writeup", material: "None", build: "Substack post drafted" }
+    ]
+  },
+  {
+    name: "Phase 4 | Information Theory and Capstone",
+    range: "Weeks 40 to 52",
+    weeks: [
+      { n: 40, topic: "Entropy and information", material: `${link("MacKay ch 1 to 3", LINKS.mackay)}`, build: "Compute entropy of three languages" },
+      { n: 41, topic: "Source coding", material: `${link("MacKay ch 4 to 6", LINKS.mackay)}`, build: "Implement Huffman coding from scratch" },
+      { n: 42, topic: "Noisy channels", material: `${link("MacKay ch 7 to 9", LINKS.mackay)}`, build: "Notebook" },
+      { n: 43, topic: "Bayesian inference", material: `${link("MacKay ch 10 to 12", LINKS.mackay)}`, build: "Checkpoint 10: MCMC sampler from scratch" },
+      { n: 44, topic: "Skip week", material: "Capstone scoping", build: "Capstone proposal drafted" },
+      { n: 45, topic: "Capstone", material: `${link("Karpathy video 4", LINKS.karpathy)}`, build: "Capstone in progress" },
+      { n: 46, topic: "Capstone", material: `${link("Karpathy video 5", LINKS.karpathy)}`, build: "Capstone in progress" },
+      { n: 47, topic: "Capstone", material: `${link("Karpathy video 6", LINKS.karpathy)}`, build: "Capstone in progress" },
+      { n: 48, topic: "Capstone", material: `${link("Karpathy video 7 (mini-GPT)", LINKS.karpathy)}`, build: "Capstone draft v1" },
+      { n: 49, topic: "Capstone", material: "None", build: "Draft v2" },
+      { n: 50, topic: "Capstone", material: "None", build: "Draft v3" },
+      { n: 51, topic: "Polish", material: "None", build: "Capstone submission" },
+      { n: 52, topic: "Retrospective", material: "None", build: "Final Substack post, retrospective" }
+    ]
+  }
+];
+
+const STORAGE_KEY = "ai-foundations-progress";
+
+function loadProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveProgress(progress) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+let progress = loadProgress();
+
+function totalWeeks() {
+  return PHASES.reduce((sum, p) => sum + p.weeks.length, 0);
+}
+
+function completedWeeks() {
+  return Object.values(progress).filter(Boolean).length;
+}
+
+function updateOverallProgress() {
+  const total = totalWeeks();
+  const done = completedWeeks();
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("overall-bar").style.width = pct + "%";
+  document.getElementById("overall-pct").textContent = pct + "%";
+  document.getElementById("overall-count").textContent = `${done} / ${total} weeks completed`;
+}
+
+function updatePhaseProgress(phaseIdx) {
+  const phase = PHASES[phaseIdx];
+  const done = phase.weeks.filter(w => progress[w.n]).length;
+  const pct = Math.round((done / phase.weeks.length) * 100);
+  const bar = document.getElementById(`phase-bar-${phaseIdx}`);
+  const label = document.getElementById(`phase-pct-${phaseIdx}`);
+  if (bar) bar.style.width = pct + "%";
+  if (label) label.textContent = `${done}/${phase.weeks.length} (${pct}%)`;
+}
+
+function toggleWeek(weekNum, phaseIdx) {
+  progress[weekNum] = !progress[weekNum];
+  saveProgress(progress);
+  updateOverallProgress();
+  updatePhaseProgress(phaseIdx);
+  document.getElementById(`row-${weekNum}`).classList.toggle("opacity-50", !!progress[weekNum]);
+}
+
+function togglePhase(phaseIdx) {
+  const body = document.getElementById(`phase-body-${phaseIdx}`);
+  const chevron = document.getElementById(`chevron-${phaseIdx}`);
+  body.classList.toggle("hidden");
+  chevron.classList.toggle("rotate-180");
+}
+
+function render() {
+  const container = document.getElementById("phases");
+  container.innerHTML = PHASES.map((phase, phaseIdx) => {
+    const done = phase.weeks.filter(w => progress[w.n]).length;
+    const pct = Math.round((done / phase.weeks.length) * 100);
+    const rows = phase.weeks.map(w => {
+      const checked = !!progress[w.n];
+      return `
+        <div id="row-${w.n}" class="grid grid-cols-[2.5rem_1fr_1fr_1fr_2.5rem] sm:grid-cols-[3rem_1fr_1.2fr_1.5fr_3rem] gap-2 items-start py-3 px-2 border-b border-gray-800 last:border-0 ${checked ? "opacity-50" : ""} text-sm">
+          <div class="text-gray-400 font-mono">${w.n}</div>
+          <div class="text-gray-100 font-medium">${w.topic}</div>
+          <div class="text-gray-400">${w.material}</div>
+          <div class="text-gray-400">${w.build}</div>
+          <div class="flex justify-center">
+            <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleWeek(${w.n}, ${phaseIdx})"
+              class="w-5 h-5 rounded accent-emerald-500 cursor-pointer">
+          </div>
+        </div>`;
+    }).join("");
+
+    return `
+      <section class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+        <button onclick="togglePhase(${phaseIdx})" class="w-full flex items-center justify-between p-4 hover:bg-gray-800/50 transition-colors text-left">
+          <div>
+            <h2 class="font-semibold text-white">${phase.name}</h2>
+            <p class="text-xs text-gray-500">${phase.range}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block">
+              <div class="w-32 bg-gray-800 rounded-full h-2 overflow-hidden">
+                <div id="phase-bar-${phaseIdx}" class="h-2 bg-emerald-500 rounded-full transition-all duration-300" style="width:${pct}%"></div>
+              </div>
+            </div>
+            <span id="phase-pct-${phaseIdx}" class="text-xs text-gray-400 font-mono w-20 text-right">${done}/${phase.weeks.length} (${pct}%)</span>
+            <svg id="chevron-${phaseIdx}" class="w-5 h-5 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </button>
+        <div id="phase-body-${phaseIdx}" class="px-2 pb-2">
+          ${rows}
+        </div>
+      </section>`;
+  }).join("");
+
+  updateOverallProgress();
+}
+
+document.getElementById("reset-btn").addEventListener("click", () => {
+  if (confirm("Reset all progress? This cannot be undone.")) {
+    progress = {};
+    saveProgress(progress);
+    render();
+  }
+});
+
+render();
+</script>
+</body>
+</html>

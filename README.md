@@ -1,6 +1,8 @@
 # Foundations of AI and Mathematical Thinking
 ### A 52-Week Self-Directed Curriculum
 
+**[Open the interactive dashboard →](https://sholafatus.github.io/ai-foundations/)**
+
 **Student:** Shola Fatimoju
 **Cadence:** 6 to 8 hours per week
 **Format:** Self-paced, public, build-driven
